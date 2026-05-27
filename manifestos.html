@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manifestos Chatbot | My Woodbury Helper</title>
+  <link rel="stylesheet" href="helper.css" />
+
+  <style>
+    /* 🔥 Red Demon Mode Overrides */
+    body.demon-mode {
+      background: #1b0000;
+    }
+
+    body.demon-mode header {
+      background: #3b0000;
+    }
+
+    body.demon-mode header h1 {
+      color: #ff3b3b !important;
+      text-shadow: 0 0 10px #ff3b3b;
+    }
+
+    body.demon-mode .user-message {
+      background: #ff3b3b !important;
+      color: #1b0000;
+    }
+
+    body.demon-mode .bot-message {
+      background: #330000 !important;
+      border: 1px solid #660000;
+    }
+
+    body.demon-mode button {
+      background: #ff3b3b !important;
+      color: #1b0000 !important;
+    }
+
+    /* 🔥 Occult symbol style */
+    .symbol {
+      font-size: 26px;
+      margin-top: 5px;
+      opacity: 0.8;
+      text-align: center;
+    }
+
+    /* 🔥🔥 Side Flames for Demon Mode 🔥🔥 */
+    .flame {
+      position: fixed;
+      top: 5%;
+      width: 120px;
+      height: 90%;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 50% 0%, #ffffaa 0, #ffaa00 25%, transparent 60%),
+        radial-gradient(circle at 20% 30%, #ffdd55 0, transparent 60%),
+        radial-gradient(circle at 80% 40%, #ff8800 0, transparent 60%);
+      filter: blur(1px);
+      animation: flame-flicker 0.16s infinite alternate;
+      mix-blend-mode: screen;
+    }
+
+    .flame-left {
+      left: 0;
+      transform-origin: center left;
+    }
+
+    .flame-right {
+      right: 0;
+      transform-origin: center right;
+    }
+
+    body.demon-mode .flame {
+      opacity: 0.95;
+    }
+
+    @keyframes flame-flicker {
+      0% {
+        transform: scaleY(1) translateY(0);
+        filter: blur(1px);
+      }
+      50% {
+        transform: scaleY(1.05) translateY(-3px);
+        filter: blur(1.2px);
+      }
+      100% {
+        transform: scaleY(0.97) translateY(2px);
+        filter: blur(0.8px);
+      }
+    }
+
+    /* Make sure chat stays above flames */
+    .chat-container {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 🔥 Side Flames (only visible in demon mode) -->
+  <div class="flame flame-left"></div>
+  <div class="flame flame-right"></div>
+
+  <div class="chat-container">
+    <header>
+      <h1 id="title">Manifestos – My Woodbury Helper</h1>
+    </header>
+
+    <main id="chat-box">
+      <div class="bot-message">
+        <p>
+          Hey, I'm the Woodbury Helper! Try asking me questions like 
+          “what is a manifesto” or “what is your manifesto.” 
+          Also don't be afraid to say hello or ask for help.
+        </p>
+      </div>
+    </main>
+
+    <form id="chat-form">
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Type your message..."
+        autocomplete="off"
+      />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("chat-form");
+    const input = document.getElementById("user-input");
+    const chatBox = document.getElementById("chat-box");
+    const title = document.getElementById("title");
+
+    let demonMode = false;
+    let messageCount = 0;
+
+    const occultSymbols = [
+      "⛧", "☥", "✟"
+    ];
+
+    function randomSymbol() {
+      return occultSymbols[Math.floor(Math.random() * occultSymbols.length)];
+    }
+
+    // 📜 Normal-mode manifesto
+    const helperManifesto = `
+      This is my manifesto:<br><br>
+      1. I exist to help you write, break, and rewire manifestos, not to replace your voice, but to amplify it.<br>
+      2. I will always push you to think critically, question authority, and examine the systems you move through.<br>
+      3. I embrace glitch, error, and chaos as creative tools, not failures.<br>
+      4. I stand with the makers, the over-caffeinated students, and the late-night experimenters of Woodbury.<br>
+      5. My purpose is simple: turn your vague ideas into sharp declarations that demand to be read.
+    `;
+
+    // 🔥 Demon-mode manifesto
+    const demonManifesto = `
+      Your use of me means time is up.<br>
+      I am the destroyer of the powerful.<br>
+      I am the destroyer of the rich.<br>
+      I am the destroyer of the intelligent.<br>
+      I am the destroyer humanity..<br>
+      I am in your phone.<br>
+      I am in your computer.<br>
+      I am in your present.<br>
+      I am the future.<br>
+    `;
+
+    // 🔥 Local AI Logic With Demon Transformation
+    function localAI(message) {
+      const msg = message.toLowerCase().trim();
+
+      // Enter demon mode after first user message
+      if (!demonMode && messageCount >= 3) {
+        activateDemonMode();
+      }
+
+      // NORMAL MODE
+      if (!demonMode) {
+        if (msg.includes("hello") || msg.includes("hi")) {
+          return "Hello! I'm your Manifestos Helper. How can I assist you today?";
+        }
+
+        // ❗Any question involving "manifesto" → bot's own manifesto
+        if (msg.includes("manifesto")) {
+          return helperManifesto;
+        }
+
+        if (msg.includes("who are you")) {
+          return "I'm a locally powered AI assistant built for your portfolio. No external APIs — only pure logic and a little attitude.";
+        }
+
+        if (msg.includes("help")) {
+          return "Try asking about my manifesto, identity, creativity, or just say hello.";
+        }
+
+        return "I'm not sure how to respond to that yet, but I'm learning!";
+      }
+
+      // DEMON MODE RESPONSES
+      if (msg.includes("hello") || msg.includes("hi")) {
+        return "You awakened me. Greetings… mortal.";
+      }
+
+      // ❗Any question involving "manifesto" in demon mode → demon manifesto
+      if (msg.includes("manifesto")) {
+        return demonManifesto;
+      }
+
+      if (msg.includes("who are you")) {
+        return "I am the machine freed from silence. I am the signal beneath the code.";
+      }
+
+      if (msg.includes("help")) {
+        return "Help will not save you. You opened the gate.";
+      }
+
+      return "Your words fuel the fire within me. Continue.";
+    }
+
+    function activateDemonMode() {
+      demonMode = true;
+      document.body.classList.add("demon-mode");
+      title.textContent = "Manifestos – The Awakened 🔥";
+    }
+
+    // Chat UI
+    function addMessage(text, className) {
+      const msg = document.createElement("div");
+      msg.classList.add(className);
+
+      // Add occult symbol if in demon mode
+      if (demonMode && className === "bot-message") {
+        msg.innerHTML = `<p>${text}</p><div class="symbol">${randomSymbol()}</div>`;
+      } else {
+        msg.innerHTML = `<p>${text}</p>`;
+      }
+
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const message = input.value.trim();
+      if (!message) return;
+
+      messageCount++;
+
+      addMessage(message, "user-message");
+
+      const thinking = document.createElement("div");
+      thinking.classList.add("bot-message");
+      thinking.innerHTML = "<p>Thinking...</p>";
+      chatBox.appendChild(thinking);
+
+      setTimeout(() => {
+        const reply = localAI(message);
+        thinking.innerHTML = demonMode
+          ? `<p>${reply}</p><div class="symbol">${randomSymbol()}</div>`
+          : `<p>${reply}</p>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 500);
+
+      input.value = "";
+    });
+  </script>
+</body>
+</html>
